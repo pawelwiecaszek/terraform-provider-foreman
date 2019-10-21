@@ -28,7 +28,7 @@ type ForemanComputeProfile struct {
 // ReadComputeProfile reads the attributes of a ForemanComputeProfile identified by
 // the supplied ID and returns a ForemanComputeProfile reference.
 func (c *Client) ReadComputeProfile(id int) (*ForemanComputeProfile, error) {
-	log.Tracef("foreman/api/templatekind.go#Read")
+	log.Tracef("foreman/api/compute_attributes.go#Read")
 
 	reqEndpoint := fmt.Sprintf("/%s/%d", ComputeProfileEndpointPrefix, id)
 
@@ -60,7 +60,7 @@ func (c *Client) ReadComputeProfile(id int) (*ForemanComputeProfile, error) {
 // of the supplied ForemanComputeProfile reference and returns a QueryResponse
 // struct containing query/response metadata and the matching template kinds
 func (c *Client) QueryComputeProfile(t *ForemanComputeProfile) (QueryResponse, error) {
-	log.Tracef("foreman/api/templatekind.go#Search")
+	log.Tracef("foreman/api/compute_attributes.go#Search")
 
 	queryResponse := QueryResponse{}
 

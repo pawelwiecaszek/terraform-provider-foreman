@@ -159,6 +159,7 @@ func Provider() terraform.ResourceProvider {
 			"foreman_provisioningtemplate": resourceForemanProvisioningTemplate(),
 			"foreman_smartproxy":           resourceForemanSmartProxy(),
 			"foreman_computeresource":      resourceForemanComputeResource(),
+			"foreman_computeattributes":    resourceForemanComputeAttributes(),
 			"foreman_image":                resourceForemanImage(),
 			"foreman_environment":          resourceForemanEnvironment(),
 			"foreman_parameter":            resourceForemanParameter(),
