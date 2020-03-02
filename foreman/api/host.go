@@ -80,6 +80,8 @@ type ForemanHost struct {
 	ComputeResourceId int `json:"compute_resource_id,omitempty"`
 	// ComputeProfileId specifies the Attributes via the Profile Id on the Hypervisor
 	ComputeProfileId int `json:"compute_profile_id,omitempty"`
+	// LocationID specifies the location of the host
+	LocationId int `json:"location_id"`
 }
 
 // ForemanInterfacesAttribute representing a hosts defined network interfaces
@@ -161,6 +163,7 @@ func (fh ForemanHost) MarshalJSON() ([]byte, error) {
 	fhMap["environment_id"] = intIdToJSONString(fh.EnvironmentId)
 	fhMap["compute_resource_id"] = intIdToJSONString(fh.ComputeResourceId)
 	fhMap["compute_profile_id"] = intIdToJSONString(fh.ComputeProfileId)
+	fhMap["location_id"] = intIdToJSONString(fh.LocationId)
 	if len(fh.InterfacesAttributes) > 0 {
 		fhMap["interfaces_attributes"] = fh.InterfacesAttributes
 	}
@@ -230,6 +233,7 @@ func (fh *ForemanHost) UnmarshalJSON(b []byte) error {
 	fh.ModelId = unmarshalInteger(fhMap["model_id"])
 	fh.ComputeResourceId = unmarshalInteger(fhMap["compute_resource_id"])
 	fh.ComputeProfileId = unmarshalInteger(fhMap["compute_profile_id"])
+	fh.LocationId = unmarshalInteger(fhMap["location_id"])
 
 	// Foreman returns FQDN as Name but doesnt accept it as Name in return. Great times
 	if fh.DomainName != "" && strings.Contains(fh.ForemanObject.Name, fh.DomainName) {

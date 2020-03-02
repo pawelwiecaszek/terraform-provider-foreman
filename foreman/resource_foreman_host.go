@@ -183,6 +183,12 @@ func resourceForemanHost() *schema.Resource {
 				Computed:     true,
 				ValidateFunc: validation.IntAtLeast(0),
 			},
+			"location_id": &schema.Schema{
+				Type:         schema.TypeInt,
+				Optional:     true,
+				ForceNew:     true,
+				ValidateFunc: validation.IntAtLeast(0),
+			},
 
 			// -- Key Components --
 			"interfaces_attributes": &schema.Schema{
@@ -380,6 +386,9 @@ func buildForemanHost(d *schema.ResourceData) *api.ForemanHost {
 	if attr, ok = d.GetOk("compute_profile_id"); ok {
 		host.ComputeProfileId = attr.(int)
 	}
+	if attr, ok = d.GetOk("location_id"); ok {
+		host.LocationId = attr.(int)
+	}
 	if attr, ok = d.GetOk("parameters"); ok {
 		hostTags := d.Get("parameters").(map[string]interface{})
 		for key, value := range hostTags {
@@ -547,6 +556,7 @@ func setResourceDataFromForemanHost(d *schema.ResourceData, fh *api.ForemanHost)
 	d.Set("hostgroup_id", fh.HostgroupId)
 	d.Set("compute_resource_id", fh.ComputeResourceId)
 	d.Set("compute_profile_id", fh.ComputeProfileId)
+	d.Set("location_id", fh.LocationId)
 	d.Set("operatingsystem_id", fh.OperatingSystemId)
 	d.Set("medium_id", fh.MediumId)
 	d.Set("image_id", fh.ImageId)
@@ -561,6 +571,7 @@ func setResourceDataFromForemanHost(d *schema.ResourceData, fh *api.ForemanHost)
 	d.SetPartial("hostgroup_id")
 	d.SetPartial("compute_resource_id")
 	d.SetPartial("compute_profile_id")
+	d.SetPartial("location_id")
 	d.SetPartial("operatingsystem_id")
 	d.SetPartial("medium_id")
 	d.SetPartial("image_id")
@@ -664,13 +675,6 @@ func resourceForemanHostCreate(d *schema.ResourceData, meta interface{}) error {
 			},
 			api.Power{
 				PowerAction: api.PowerCycle,
-			},
-		}
-	} else {
-		log.Debugf("Using default Foreman behaviour for startup")
-		powerCmds = []interface{}{
-			api.Power{
-				PowerAction: api.PowerOn,
 			},
 		}
 	}
@@ -781,6 +785,7 @@ func resourceForemanHostUpdate(d *schema.ResourceData, meta interface{}) error {
 		d.HasChange("hostgroup_id") ||
 		d.HasChange("compute_resource_id") ||
 		d.HasChange("compute_profile_id") ||
+		d.HasChange("location_id") ||
 		d.HasChange("operatingsystem_id") ||
 		d.HasChange("interfaces_attributes") {
 
