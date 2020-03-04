@@ -167,6 +167,8 @@ func Provider() terraform.ResourceProvider {
 			"foreman_subnet":               resourceForemanSubnet(),
 			"foreman_domain":               resourceForemanDomain(),
 			"foreman_defaulttemplate":      resourceForemanDefaultTemplate(),
+			"foreman_computeattributes":	resourceForemanComputeAttributes(),
+			"foreman_computeprofile":       resourceForemanComputeProfile(),
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{

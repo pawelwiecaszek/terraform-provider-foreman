@@ -2,8 +2,7 @@ package foreman
 
 import (
 	"fmt"
-	"strconv"
-
+	
 	"github.com/HanseMerkur/terraform-provider-foreman/foreman/api"
 	"github.com/HanseMerkur/terraform-provider-utils/autodoc"
 	"github.com/HanseMerkur/terraform-provider-utils/log"
@@ -38,19 +37,19 @@ func dataSourceForemanComputeProfile() *schema.Resource {
 // resource data reference.  The struct's  members are populated from the data
 // populated in the resource data.  Missing members will be left to the zero
 // value for that member's type.
-func buildForemanComputeProfile(d *schema.ResourceData) *api.ForemanComputeProfile {
-	t := api.ForemanComputeProfile{}
-	obj := buildForemanObject(d)
-	t.ForemanObject = *obj
-	return &t
-}
+//func buildForemanComputeProfile(d *schema.ResourceData) *api.ForemanComputeProfile {
+//	t := api.ForemanComputeProfile{}
+//	obj := buildForemanObject(d)
+//	t.ForemanObject = *obj
+//	return &t
+//}
 
 // setResourceDataFromForemanComputeProfile sets a ResourceData's attributes from
 // the attributes of the supplied ForemanComputeProfile reference
-func setResourceDataFromForemanComputeProfile(d *schema.ResourceData, fk *api.ForemanComputeProfile) {
-	d.SetId(strconv.Itoa(fk.Id))
-	d.Set("name", fk.Name)
-}
+//func setResourceDataFromForemanComputeProfile(d *schema.ResourceData, fk *api.ForemanComputeProfile) {
+//	d.SetId(strconv.Itoa(fk.Id))
+//	d.Set("name", fk.Name)
+//}
 
 // -----------------------------------------------------------------------------
 // Resource CRUD Operations
