@@ -42,7 +42,8 @@ type ForemanSubnet struct {
 	To string `json:"to"`
 	// Default boot mode for instances assigned to this subnet.  If set, valid
 	// values are "Static" and "DHCP".
-	BootMode string `json:"boot_mode"`
+	BootMode  string `json:"boot_mode"`
+	DomainIds []int  `json:"domains_ids"`
 }
 
 // -----------------------------------------------------------------------------

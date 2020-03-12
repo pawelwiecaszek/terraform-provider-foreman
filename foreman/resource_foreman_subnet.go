@@ -6,6 +6,7 @@ import (
 
 	"github.com/HanseMerkur/terraform-provider-foreman/foreman/api"
 	"github.com/HanseMerkur/terraform-provider-utils/autodoc"
+	"github.com/HanseMerkur/terraform-provider-utils/conv"
 	"github.com/HanseMerkur/terraform-provider-utils/log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -127,6 +128,16 @@ func resourceForemanSubnet() *schema.Resource {
 				Description: "Default boot mode for instances assigned to this subnet. " +
 					"Values include: `\"Static\"`, `\"DHCP\"`.",
 			},
+
+			"domain_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the domains associated with this subnet",
+			},
 		},
 	}
 }
@@ -175,6 +186,11 @@ func buildForemanSubnet(d *schema.ResourceData) *api.ForemanSubnet {
 		s.BootMode = attr.(string)
 	}
 
+	if attr, ok = d.GetOk("operatingsystem_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		s.DomainIds = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
 	return &s
 }
 
@@ -194,6 +210,7 @@ func setResourceDataFromForemanSubnet(d *schema.ResourceData, fs *api.ForemanSub
 	d.Set("from", fs.From)
 	d.Set("to", fs.To)
 	d.Set("boot_mode", fs.BootMode)
+	d.Set("domain_ids", fs.DomainIds)
 }
 
 // -----------------------------------------------------------------------------
