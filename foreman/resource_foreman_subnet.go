@@ -186,7 +186,7 @@ func buildForemanSubnet(d *schema.ResourceData) *api.ForemanSubnet {
 		s.BootMode = attr.(string)
 	}
 
-	if attr, ok = d.GetOk("operatingsystem_ids"); ok {
+	if attr, ok = d.GetOk("domains_ids"); ok {
 		attrSet := attr.(*schema.Set)
 		s.DomainIds = conv.InterfaceSliceToIntSlice(attrSet.List())
 	}
@@ -210,7 +210,7 @@ func setResourceDataFromForemanSubnet(d *schema.ResourceData, fs *api.ForemanSub
 	d.Set("from", fs.From)
 	d.Set("to", fs.To)
 	d.Set("boot_mode", fs.BootMode)
-	d.Set("domain_ids", fs.DomainIds)
+	d.Set("domains_ids", fs.DomainIds)
 }
 
 // -----------------------------------------------------------------------------

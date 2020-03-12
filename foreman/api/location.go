@@ -21,6 +21,22 @@ const (
 type ForemanLocation struct {
 	// Inherits the base object's attributes
 	ForemanObject
+
+	Name                    string `json:"name"`
+	Description             string `json:"description"`
+	UserIds                 []int  `json:"user_ids"`
+	SmartProxyIds           []int  `json:"smart_proxy_ids"`
+	ComputeResourceIds      []int  `json:"compute_resource_ids"`
+	MediaIds                []int  `json:"media_ids"`
+	ConfigTemplateIds       []int  `json:"config_template_ids"`
+	PtableIds               []int  `json:"ptable_ids"`
+	ProvisioningTemplateIds []int  `json:"provisiong_template_ids"`
+	DomainIds               []int  `json:"domain_ids"`
+	RealmIds                []int  `json:"realm_ids"`
+	HostgroupIds            []int  `json:"hostgroup_ids"`
+	EnvironmentIds          []int  `json:"environment_ids"`
+	SubnetIds               []int  `json:"subnet_ids"`
+	ParentIds               []int  `json:"parent_id"`
 }
 
 // -----------------------------------------------------------------------------
