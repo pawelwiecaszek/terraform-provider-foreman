@@ -202,6 +202,21 @@ func setResourceDataFromForemanSubnet(d *schema.ResourceData, fs *api.ForemanSub
 
 func resourceForemanSubnetCreate(d *schema.ResourceData, meta interface{}) error {
 	log.Tracef("resource_foreman_subnet.go#Create")
+
+	client := meta.(*api.Client)
+	e := buildForemanSubnet(d)
+
+	log.Debugf("ForemanSubnet: [%+v]", e)
+
+	createdSubnet, createErr := client.CreateSubnet(e)
+	if createErr != nil {
+		return createErr
+	}
+
+	log.Debugf("Created ForemanSubnet: [%+v]", createdSubnet)
+
+	setResourceDataFromForemanSubnet(d, createdSubnet)
+
 	return nil
 }
 
@@ -227,6 +242,21 @@ func resourceForemanSubnetRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceForemanSubnetUpdate(d *schema.ResourceData, meta interface{}) error {
 	log.Tracef("resource_foreman_subnet.go#Update")
+
+	client := meta.(*api.Client)
+	e := buildForemanSubnet(d)
+
+	log.Debugf("ForemanSubnet: [%+v]", e)
+
+	updatedSubnet, updateErr := client.UpdateSubnet(e)
+	if updateErr != nil {
+		return updateErr
+	}
+
+	log.Debugf("Updated ForemanSubnet: [%+v]", updatedSubnet)
+
+	setResourceDataFromForemanSubnet(d, updatedSubnet)
+
 	return nil
 }
 
