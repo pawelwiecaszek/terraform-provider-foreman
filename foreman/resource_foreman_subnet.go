@@ -129,10 +129,11 @@ func resourceForemanSubnet() *schema.Resource {
 					"Values include: `\"Static\"`, `\"DHCP\"`.",
 			},
 
-			"domain_ids": &schema.Schema{
+			"domains": &schema.Schema{
 				Type:     schema.TypeSet,
 				Optional: true,
 				Computed: true,
+				MinItems: 1,
 				Elem: &schema.Schema{
 					Type: schema.TypeInt,
 				},
@@ -186,7 +187,7 @@ func buildForemanSubnet(d *schema.ResourceData) *api.ForemanSubnet {
 		s.BootMode = attr.(string)
 	}
 
-	if attr, ok = d.GetOk("domain_ids"); ok {
+	if attr, ok = d.GetOk("domains"); ok {
 		attrSet := attr.(*schema.Set)
 		s.DomainIds = conv.InterfaceSliceToIntSlice(attrSet.List())
 	}
@@ -210,7 +211,7 @@ func setResourceDataFromForemanSubnet(d *schema.ResourceData, fs *api.ForemanSub
 	d.Set("from", fs.From)
 	d.Set("to", fs.To)
 	d.Set("boot_mode", fs.BootMode)
-	d.Set("domain_ids", fs.DomainIds)
+	d.Set("domains", fs.DomainIds)
 }
 
 // -----------------------------------------------------------------------------

@@ -36,7 +36,70 @@ type ForemanLocation struct {
 	HostgroupIds            []int  `json:"hostgroup_ids"`
 	EnvironmentIds          []int  `json:"environment_ids"`
 	SubnetIds               []int  `json:"subnet_ids"`
-	ParentIds               []int  `json:"parent_id"`
+	ParentId                int    `json:"parent_id"`
+}
+
+type foremanLocationRespJSON struct {
+	Users                 []ForemanObject `json:"users"`
+	SmartProxies          []ForemanObject `json:"smart_proxies"`
+	ComputeResources      []ForemanObject `json:"compute_resources"`
+	Media                 []ForemanObject `json:"media"`
+	ConfigTemplates       []ForemanObject `json:"config_templates"`
+	Ptables               []ForemanObject `json:"ptables"`
+	ProvisioningTemplates []ForemanObject `json:"provisioning_templates"`
+	Domains               []ForemanObject `json:"domains"`
+	Realms                []ForemanObject `json:"realms"`
+	Hostgroups            []ForemanObject `json:"hostgroups"`
+	Environments          []ForemanObject `json:"environments"`
+	Subnets               []ForemanObject `json:"subnets"`
+}
+
+// Implement the Unmarshaler interface
+func (l *ForemanLocation) UnmarshalJSON(b []byte) error {
+	var jsonDecErr error
+
+	// Unmarshal the common Foreman object properties
+	var fo ForemanObject
+	jsonDecErr = json.Unmarshal(b, &fo)
+	if jsonDecErr != nil {
+		return jsonDecErr
+	}
+	l.ForemanObject = fo
+
+	var foJSON foremanLocationRespJSON
+	jsonDecErr = json.Unmarshal(b, &foJSON)
+	if jsonDecErr != nil {
+		return jsonDecErr
+	}
+	l.UserIds = foremanObjectArrayToIdIntArray(foJSON.Users)
+	l.SmartProxyIds = foremanObjectArrayToIdIntArray(foJSON.SmartProxies)
+	l.ComputeResourceIds = foremanObjectArrayToIdIntArray(foJSON.ComputeResources)
+	l.MediaIds = foremanObjectArrayToIdIntArray(foJSON.Media)
+	l.ConfigTemplateIds = foremanObjectArrayToIdIntArray(foJSON.ConfigTemplates)
+	l.PtableIds = foremanObjectArrayToIdIntArray(foJSON.Ptables)
+	l.ProvisioningTemplateIds = foremanObjectArrayToIdIntArray(foJSON.ProvisioningTemplates)
+	l.DomainIds = foremanObjectArrayToIdIntArray(foJSON.Domains)
+	l.RealmIds = foremanObjectArrayToIdIntArray(foJSON.Realms)
+	l.HostgroupIds = foremanObjectArrayToIdIntArray(foJSON.Hostgroups)
+	l.EnvironmentIds = foremanObjectArrayToIdIntArray(foJSON.Environments)
+	l.SubnetIds = foremanObjectArrayToIdIntArray(foJSON.Subnets)
+
+	var foMap map[string]interface{}
+	jsonDecErr = json.Unmarshal(b, &foMap)
+	if jsonDecErr != nil {
+		return jsonDecErr
+	}
+	log.Debugf("foMap: [%v]", foMap)
+
+	var ok bool
+	if l.Name, ok = foMap["name"].(string); !ok {
+		l.Name = ""
+	}
+	if l.Description, ok = foMap["description"].(string); !ok {
+		l.Description = ""
+	}
+
+	return nil
 }
 
 // -----------------------------------------------------------------------------

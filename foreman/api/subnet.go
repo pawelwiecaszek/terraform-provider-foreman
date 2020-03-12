@@ -46,6 +46,67 @@ type ForemanSubnet struct {
 	DomainIds []int  `json:"domain_ids"`
 }
 
+type foremanSubnetRespJSON struct {
+	Domains []ForemanObject `json:"domains"`
+}
+
+func (s *ForemanSubnet) UnmarshalJSON(b []byte) error {
+	var jsonDecErr error
+
+	// Unmarshal the common Foreman object properties
+	var fo ForemanObject
+	jsonDecErr = json.Unmarshal(b, &fo)
+	if jsonDecErr != nil {
+		return jsonDecErr
+	}
+	s.ForemanObject = fo
+
+	var foJSON foremanLocationRespJSON
+	jsonDecErr = json.Unmarshal(b, &foJSON)
+	if jsonDecErr != nil {
+		return jsonDecErr
+	}
+	s.DomainIds = foremanObjectArrayToIdIntArray(foJSON.Domains)
+
+	var foMap map[string]interface{}
+	jsonDecErr = json.Unmarshal(b, &foMap)
+	if jsonDecErr != nil {
+		return jsonDecErr
+	}
+	log.Debugf("foMap: [%v]", foMap)
+
+	var ok bool
+	if s.Network, ok = foMap["network"].(string); !ok {
+		s.Network = ""
+	}
+	if s.Mask, ok = foMap["mask"].(string); !ok {
+		s.Mask = ""
+	}
+	if s.Gateway, ok = foMap["gateway"].(string); !ok {
+		s.Gateway = ""
+	}
+	if s.DnsPrimary, ok = foMap["dns_primary"].(string); !ok {
+		s.DnsPrimary = ""
+	}
+	if s.DnsSecondary, ok = foMap["dns_secondary"].(string); !ok {
+		s.DnsSecondary = ""
+	}
+	if s.Ipam, ok = foMap["ipam"].(string); !ok {
+		s.Ipam = ""
+	}
+	if s.From, ok = foMap["from"].(string); !ok {
+		s.From = ""
+	}
+	if s.To, ok = foMap["to"].(string); !ok {
+		s.To = ""
+	}
+	if s.BootMode, ok = foMap["boot_mode"].(string); !ok {
+		s.BootMode = ""
+	}
+
+	return nil
+}
+
 // -----------------------------------------------------------------------------
 // CRUD Implementation
 // -----------------------------------------------------------------------------
