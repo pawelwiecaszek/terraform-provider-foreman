@@ -36,7 +36,6 @@ type ForemanLocation struct {
 	HostgroupIds            []int  `json:"hostgroup_ids"`
 	EnvironmentIds          []int  `json:"environment_ids"`
 	SubnetIds               []int  `json:"subnet_ids"`
-	ParentId                int    `json:"parent_id"`
 }
 
 type foremanLocationRespJSON struct {

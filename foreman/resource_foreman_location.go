@@ -160,12 +160,6 @@ func resourceForemanLocation() *schema.Resource {
 				},
 				Description: "IDs of the subnets associated with this location",
 			},
-
-			"parent_id": &schema.Schema{
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Description: "ID of the parents associated with this location",
-			},
 		},
 	}
 }
@@ -257,10 +251,6 @@ func buildForemanLocation(d *schema.ResourceData) *api.ForemanLocation {
 		location.SubnetIds = conv.InterfaceSliceToIntSlice(attrSet.List())
 	}
 
-	if attr, ok = d.GetOk("parent_id"); ok {
-		location.ParentId = attr.(int)
-	}
-
 	return &location
 }
 
@@ -284,7 +274,6 @@ func setResourceDataFromForemanLocation(d *schema.ResourceData, fe *api.ForemanL
 	d.Set("hostgroups", fe.HostgroupIds)
 	d.Set("environments", fe.EnvironmentIds)
 	d.Set("subnets", fe.SubnetIds)
-	d.Set("parent_id", fe.ParentId)
 }
 
 // -----------------------------------------------------------------------------
