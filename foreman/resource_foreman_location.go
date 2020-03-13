@@ -199,7 +199,7 @@ func buildForemanLocation(d *schema.ResourceData) *api.ForemanLocation {
 
 	if attr, ok = d.GetOk("users"); ok {
 		attrSet := attr.(*schema.Set)
-		location.DomainIds = conv.InterfaceSliceToIntSlice(attrSet.List())
+		location.UserIds = conv.InterfaceSliceToIntSlice(attrSet.List())
 	}
 
 	if attr, ok = d.GetOk("smart_proxies"); ok {
