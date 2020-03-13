@@ -30,7 +30,7 @@ type ForemanLocation struct {
 	MediaIds                []int  `json:"media_ids"`
 	ConfigTemplateIds       []int  `json:"config_template_ids"`
 	PtableIds               []int  `json:"ptable_ids"`
-	ProvisioningTemplateIds []int  `json:"provisiong_template_ids"`
+	ProvisioningTemplateIds []int  `json:"provisioning_template_ids"`
 	DomainIds               []int  `json:"domain_ids"`
 	RealmIds                []int  `json:"realm_ids"`
 	HostgroupIds            []int  `json:"hostgroup_ids"`
