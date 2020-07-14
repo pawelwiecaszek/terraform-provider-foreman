@@ -52,7 +52,7 @@ type ForemanHost struct {
 	Method string `json:"provision_method"`
 	// ID of the domain to assign the host
 	DomainId int `json:"domain_id"`
-	// ID of the realm to assign the host
+	// Realm ID of the host
 	RealmId int `json:"realm_id"`
 	// Name of the Domain. To substract from the Machine name
 	DomainName string `json:"domain_name"`
