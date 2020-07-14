@@ -52,6 +52,8 @@ type ForemanHost struct {
 	Method string `json:"provision_method"`
 	// ID of the domain to assign the host
 	DomainId int `json:"domain_id"`
+	// ID of the realm to assign the host
+	RealmId int `json:"realm_id"`
 	// Name of the Domain. To substract from the Machine name
 	DomainName string `json:"domain_name"`
 	// ID of the environment to assign the host
@@ -155,6 +157,7 @@ func (fh ForemanHost) MarshalJSON() ([]byte, error) {
 	fhMap["build"] = fh.Build
 	fhMap["provision_method"] = fh.Method
 	fhMap["domain_id"] = intIdToJSONString(fh.DomainId)
+	fhMap["realm_id"] = intIdToJSONString(fh.RealmId)
 	fhMap["operatingsystem_id"] = intIdToJSONString(fh.OperatingSystemId)
 	fhMap["medium_id"] = intIdToJSONString(fh.MediumId)
 	fhMap["image_id"] = intIdToJSONString(fh.ImageId)
@@ -225,6 +228,7 @@ func (fh *ForemanHost) UnmarshalJSON(b []byte) error {
 
 	// Unmarshal the remaining foreign keys to their id
 	fh.DomainId = unmarshalInteger(fhMap["domain_id"])
+	fh.RealmId = unmarshalInteger(fhMap["realm_id"])
 	fh.EnvironmentId = unmarshalInteger(fhMap["environment_id"])
 	fh.HostgroupId = unmarshalInteger(fhMap["hostgroup_id"])
 	fh.OperatingSystemId = unmarshalInteger(fhMap["operatingsystem_id"])

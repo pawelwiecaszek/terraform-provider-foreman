@@ -124,6 +124,15 @@ func resourceForemanHost() *schema.Resource {
 				Description:  "ID of the domain to assign to the host.",
 			},
 
+			"realm_id": &schema.Schema{
+				Type:         schema.TypeInt,
+				Optional:     true,
+				ForceNew:     true,
+				Computed:     true,
+				ValidateFunc: validation.IntAtLeast(0),
+				Description:  "ID of the realm to assign to the host.",
+			},
+
 			"environment_id": &schema.Schema{
 				Type:         schema.TypeInt,
 				Optional:     true,
@@ -362,6 +371,9 @@ func buildForemanHost(d *schema.ResourceData) *api.ForemanHost {
 	if attr, ok = d.GetOk("domain_id"); ok {
 		host.DomainId = attr.(int)
 	}
+	if attr, ok = d.GetOk("realm_id"); ok {
+		host.RealmId = attr.(int)
+	}
 	if attr, ok = d.GetOk("environment_id"); ok {
 		host.EnvironmentId = attr.(int)
 	}
@@ -552,6 +564,7 @@ func setResourceDataFromForemanHost(d *schema.ResourceData, fh *api.ForemanHost)
 	d.Set("comment", fh.Comment)
 	d.Set("parameters", fh.HostParameters)
 	d.Set("domain_id", fh.DomainId)
+	d.Set("realm_id", fh.RealmId)
 	d.Set("environment_id", fh.EnvironmentId)
 	d.Set("hostgroup_id", fh.HostgroupId)
 	d.Set("compute_resource_id", fh.ComputeResourceId)
@@ -567,6 +580,7 @@ func setResourceDataFromForemanHost(d *schema.ResourceData, fh *api.ForemanHost)
 	d.SetPartial("comment")
 	d.SetPartial("parameters")
 	d.SetPartial("domain_id")
+	d.SetPartial("realm_id")
 	d.SetPartial("environment_id")
 	d.SetPartial("hostgroup_id")
 	d.SetPartial("compute_resource_id")
@@ -781,6 +795,7 @@ func resourceForemanHostUpdate(d *schema.ResourceData, meta interface{}) error {
 		d.HasChange("comment") ||
 		d.HasChange("parameters") ||
 		d.HasChange("domain_id") ||
+		d.HasChange("realm_id") ||
 		d.HasChange("environment_id") ||
 		d.HasChange("hostgroup_id") ||
 		d.HasChange("compute_resource_id") ||
