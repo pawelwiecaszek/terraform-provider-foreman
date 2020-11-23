@@ -16,7 +16,6 @@ const (
 // -----------------------------------------------------------------------------
 // Struct Definition and Helpers
 // -----------------------------------------------------------------------------
-
 // The ForemanPuppetClass API model represents the puppet class name.
 
 type ForemanPuppetClass struct {
