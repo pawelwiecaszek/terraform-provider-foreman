@@ -74,7 +74,7 @@ func (fi *ForemanSmartClassParameter) UnmarshalJSON(b []byte) error {
 	}
 
 	if fi.Value, ok = fiMap["value"].(string); !ok {
-		fi.Value = "error_value"
+		fi.Value = fmt.Sprintf("%v", fiMap["value"])
 	}
 
 	if fi.Match, ok = fiMap["match"].(string); !ok {

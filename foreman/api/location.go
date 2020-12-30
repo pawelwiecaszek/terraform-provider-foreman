@@ -21,6 +21,15 @@ const (
 type ForemanLocation struct {
 	// Inherits the base object's attributes
 	ForemanObject
+	Realms                []int
+	ComputeResources      []int
+	Domains               []int
+	Subnets               []int
+	Environments          []int
+	Hostgroups            []int
+	ProvisioningTemplates []int
+	SmartProxies          []int
+	Users                 []int
 }
 
 // -----------------------------------------------------------------------------

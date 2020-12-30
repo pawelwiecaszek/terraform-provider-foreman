@@ -6,6 +6,7 @@ import (
 
 	"github.com/HanseMerkur/terraform-provider-foreman/foreman/api"
 	"github.com/HanseMerkur/terraform-provider-utils/autodoc"
+	"github.com/HanseMerkur/terraform-provider-utils/conv"
 	"github.com/HanseMerkur/terraform-provider-utils/log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -42,6 +43,87 @@ func resourceForemanLocation() *schema.Resource {
 					autodoc.MetaExample,
 				),
 			},
+			"realms": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the realms.",
+			},
+			"compute_resource_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the compute_resource_ids.",
+			},
+			"domain_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the domain_ids.",
+			},
+			"subnet_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the subnet_ids.",
+			},
+			"environment_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the environment_ids.",
+			},
+			"hostgroup_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the hostgroup_ids.",
+			},
+			"provisioning_templates": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the provisioning_templates.",
+			},
+			"smart_proxy_ids": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the smart_proxy_ids.",
+			},
+			"users": &schema.Schema{
+				Type:     schema.TypeSet,
+				Optional: true,
+				Computed: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeInt,
+				},
+				Description: "IDs of the users.",
+			},
 		},
 	}
 }
@@ -69,6 +151,51 @@ func buildForemanLocation(d *schema.ResourceData) *api.ForemanLocation {
 		location.Name = attr.(string)
 	}
 
+	if attr, ok = d.GetOk("realms"); ok {
+		attrSet := attr.(*schema.Set)
+		location.Realms = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("compute_resource_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		location.ComputeResources = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("domain_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		location.Domains = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("subnet_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		location.Subnets = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("environment_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		location.Environments = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("hostgroup_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		location.Hostgroups = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("provisioning_templates"); ok {
+		attrSet := attr.(*schema.Set)
+		location.ProvisioningTemplates = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("smart_proxy_ids"); ok {
+		attrSet := attr.(*schema.Set)
+		location.SmartProxies = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
+	if attr, ok = d.GetOk("users"); ok {
+		attrSet := attr.(*schema.Set)
+		location.Users = conv.InterfaceSliceToIntSlice(attrSet.List())
+	}
+
 	return &location
 }
 
@@ -79,6 +206,15 @@ func setResourceDataFromForemanLocation(d *schema.ResourceData, fe *api.ForemanL
 
 	d.SetId(strconv.Itoa(fe.Id))
 	d.Set("name", fe.Name)
+	d.Set("realms", fe.Realms)
+	d.Set("compute_resource_ids", fe.ComputeResources)
+	d.Set("domain_ids", fe.Domains)
+	d.Set("subnet_ids", fe.Subnets)
+	d.Set("environment_ids", fe.Environments)
+	d.Set("hostgroup_ids", fe.Hostgroups)
+	d.Set("provisioning_templates", fe.ProvisioningTemplates)
+	d.Set("smart_proxy_ids", fe.SmartProxies)
+	d.Set("users", fe.Users)
 }
 
 // -----------------------------------------------------------------------------
